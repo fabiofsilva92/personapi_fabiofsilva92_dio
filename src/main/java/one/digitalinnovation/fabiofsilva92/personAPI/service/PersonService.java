@@ -4,11 +4,13 @@ import one.digitalinnovation.fabiofsilva92.personAPI.dto.request.PersonDTO;
 import one.digitalinnovation.fabiofsilva92.personAPI.dto.response.MessageResponseDTO;
 import one.digitalinnovation.fabiofsilva92.personAPI.entity.Person;
 import one.digitalinnovation.fabiofsilva92.personAPI.dto.mapper.PersonMapper;
+import one.digitalinnovation.fabiofsilva92.personAPI.exception.PersonNotFoundException;
 import one.digitalinnovation.fabiofsilva92.personAPI.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +26,7 @@ public class PersonService {
         this.personRepository = personRepository;
     }
 
+    //Criar registro
     public MessageResponseDTO createPerson(PersonDTO personDTO){
         Person personToSave = personMapper.toModel(personDTO);
 
@@ -35,10 +38,19 @@ public class PersonService {
                 .build();
     }
 
+    //Listar todos registros
     public List<PersonDTO> listAll() {
         List<Person> allPeople = personRepository.findAll();
         return allPeople.stream()
                 .map(personMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    //Lista registro por id
+    public PersonDTO findById(Long id) throws PersonNotFoundException {
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException(id));
+
+        return personMapper.toDTO(person);
     }
 }

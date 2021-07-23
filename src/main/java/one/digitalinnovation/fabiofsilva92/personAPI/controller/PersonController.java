@@ -3,6 +3,7 @@ package one.digitalinnovation.fabiofsilva92.personAPI.controller;
 import one.digitalinnovation.fabiofsilva92.personAPI.dto.request.PersonDTO;
 import one.digitalinnovation.fabiofsilva92.personAPI.dto.response.MessageResponseDTO;
 import one.digitalinnovation.fabiofsilva92.personAPI.entity.Person;
+import one.digitalinnovation.fabiofsilva92.personAPI.exception.PersonNotFoundException;
 import one.digitalinnovation.fabiofsilva92.personAPI.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @PostMapping
+    @PostMapping //Criar Pessoa
     @ResponseStatus(HttpStatus.CREATED)
     public MessageResponseDTO createPerson(@RequestBody @Valid PersonDTO personDTO){
 
@@ -32,8 +33,14 @@ public class PersonController {
 
     }
 
-    @GetMapping
+    @GetMapping //Lista de pessoas
     public List<PersonDTO> listAll(){
         return personService.listAll();
     }
+
+    @GetMapping("/{id}") //Pegar pessoa por ID
+    public PersonDTO findByID(@PathVariable Long id) throws PersonNotFoundException {
+        return personService.findById(id);
+    }
+
 }
