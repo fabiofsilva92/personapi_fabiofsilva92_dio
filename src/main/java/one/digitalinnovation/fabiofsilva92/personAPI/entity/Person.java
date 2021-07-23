@@ -20,10 +20,10 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false) //obrigatório
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(nullable = false) //obrigatório
     private String lastName;
 
     @Column(nullable = false, unique = true) //CPF UNICOS
